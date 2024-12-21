@@ -10,7 +10,15 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
+        "background-inverse": "var(--background-inverse)",
         foreground: "var(--foreground)",
+        "foreground-inverse": "var(--foreground-inverse)",
+        elevation: {
+          1: "var(--elevation-1)",
+          2: "var(--elevation-2)",
+          3: "var(--elevation-3)",
+          4: "var(--elevation-4)",
+        },
       },
     },
   },
