@@ -1,0 +1,163 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Buyer {
+  id       Int      @id @default(autoincrement())
+  fullName String
+  contactNo String @unique
+  email    String   @unique
+  createdAt DateTime @default(now())
+  isLoggedIn Boolean
+  updatedAt DateTime?
+  deletedAt DateTime?
+  addresses Address[]
+  orders Order[]
+}
+
+model Merchant {
+  id       Int      @id @default(autoincrement())
+  name String
+  contactNo String @unique
+  email    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  addresses Address[]
+  products Product[]
+  orders Order[]
+}
+
+model Address {
+  id       Int      @id @default(autoincrement())
+  firstLine String
+  secondLine String
+  postcode String
+  state State
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  merchantId Int?
+  merchant   Merchant? @relation(fields: [merchantId], references: [id])
+  buyerId Int?
+  buyer   Buyer? @relation(fields: [buyerId], references: [id])
+  order Order[]
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  unit         String
+  image        String
+  availability Boolean
+  brand        String
+  category     Category
+  rating       Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  merchantId  Int
+  merchant   Merchant @relation(fields: [merchantId], references: [id])
+  items      OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  orderId   String
+  order     Order  @relation(fields: [orderId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Order {
+  id         String @id @unique
+  status     OrderStatus
+  addressId  Int
+  address    Address   @relation(fields: [addressId], references: [id])
+  pickupTime DateTime
+  buyerId     Int
+  buyer       Buyer   @relation(fields: [buyerId], references: [id])
+  merchantId Int
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  items      OrderItem[]
+  transaction Transaction?
+}
+
+model Transaction {
+  id        Int     @id @default(autoincrement())
+  subTotal Float
+  serviceTax Float
+  voucherPercent Int
+  voucherApplied Float
+  totalPayment Float
+  paymentMethod PaymentMethod
+  orderId     String @unique
+  order       Order   @relation(fields: [orderId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+enum State {
+  Johor
+  Kedah
+  Kelantan
+  KualaLumpur
+  Labuan
+  Melaka
+  NegeriSembilan
+  Pahang
+  Penang
+  Perak
+  Perlis
+  Putrajaya
+  Sabah
+  Sarawak
+  Selangor
+  Terengganu
+}
+
+enum Category {
+  Electronics
+  Fashion
+  Groceries
+  Health
+  Home
+  Sports
+  Toys
+  Vehicles
+  Books
+}
+
+enum OrderStatus {
+  Pending
+  Preparing
+  WaitingForPickup
+  Completed
+  WaitingToRefund
+  Refunded
+  DidNotPickup
+}
+
+enum PaymentMethod {
+  FPX
+  CreditCard
+  DebitCard
+  PayPal
+  CashOnDelivery
+}

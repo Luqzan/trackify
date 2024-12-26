@@ -3,14 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --background: #d7d7d7;
+  --background: #ffffff;
   --background-inverse: #1d1d1d;
   --foreground: #000000;
+  --foreground-subtle: #858585;
   --foreground-inverse: #ffffff;
-  --elevation-1: #e1e1e1;
+  --border: #dadada;
+  --table-row: #f8f8f8;
+  /* --elevation-1: #e1e1e1;
   --elevation-2: #ebebeb;
   --elevation-3: #f5f5f5;
-  --elevation-4: #ffffff;
+  --elevation-4: #ffffff; */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,16 +21,18 @@
     --background: #1d1d1d;
     --background-inverse: #d7d7d7;
     --foreground: #ffffff;
+    --foreground-subtle: #bfbfbf;
     --foreground-inverse: #000000;
-    --elevation-1: #272727;
+    --border: #6a6a6a;
+    --table-row: #242424;
+    /* --elevation-1: #272727;
     --elevation-2: #313131;
     --elevation-3: #3b3b3b;
-    --elevation-4: #454545;
+    --elevation-4: #454545; */
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
